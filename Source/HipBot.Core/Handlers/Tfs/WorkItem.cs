@@ -38,7 +38,7 @@ namespace HipBot.Handlers.Tfs
             {
                 var wiResourceUri = result.Project.Uri;
                 var uri = string.Format("{0}/web/UI/Pages/WorkItems/WorkItemEdit.aspx?id={1}&pguid={2}", tfsUri, result.Id, wiResourceUri.Segments.Last());
-                var info = string.Format("<a href=\"{5}\">{1} ({0})</a><br/><br/>Type: {2}<br/>State: {3}<br/>Assigned To: {4}", result.Id, result.Title, result.Type.Name, result.State, result.Fields["System.AssignedTo"].Value, uri);
+                var info = string.Format("<a href=\"{5}\">{1} ({0})</a><br/>Type: {2}<br/>State: {3}<br/>Assigned To: {4}", result.Id, result.Title, result.Type.Name, result.State, result.Fields["System.AssignedTo"].Value, uri);
                 room = RoomService.GetRoomByJabberId(room.JabberId);
                 
                 HipChatService.SayHtml(room, info);
