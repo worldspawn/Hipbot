@@ -85,7 +85,7 @@ namespace HipBot.Services
             // Check each list
             foreach (var nick in List())
             {
-                if (message.Body.IndexOf(nick + " ", 0, StringComparison.InvariantCultureIgnoreCase) == 0)
+                if (message.Body.IndexOf("@" + nick + " ", 0, StringComparison.InvariantCultureIgnoreCase) == 0)
                 {
                     return true;
                 }

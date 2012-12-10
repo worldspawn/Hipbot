@@ -33,5 +33,6 @@ namespace HipBot.Services
         /// </summary>
         void Reconnect();
 
+        Room GetRoomByJabberId(string jabberId);
     }
 }

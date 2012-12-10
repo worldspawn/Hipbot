@@ -1,5 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Timers;
+using System.Web;
+using Sugar;
+using Sugar.Net;
+using Sugar.Xml;
 using agsXMPP;
 using agsXMPP.protocol.client;
 using agsXMPP.protocol.extensions.chatstates;
@@ -130,6 +136,22 @@ namespace HipBot.Services
         #endregion
 
         /// <summary>
+        /// Gets or sets the HTTP service.
+        /// </summary>
+        /// <value>
+        /// The HTTP service.
+        /// </value>
+        public IHttpService HttpService { get; set; }
+
+        /// <summary>
+        /// Gets or sets the credential service.
+        /// </summary>
+        /// <value>
+        /// The credential service.
+        /// </value>
+        public ICredentialService CredentialService { get; set; }
+
+        /// <summary>
         /// Gets a value indicating whether this instance is logged in.
         /// </summary>
         /// <value>
@@ -232,7 +254,7 @@ namespace HipBot.Services
         /// <param name="message">The message.</param>
         public void SayHtml(Room room, string message)
         {
-            Say(room, message, true);
+            SayHtml(room, message, true);
         }
 
         /// <summary>
@@ -243,7 +265,30 @@ namespace HipBot.Services
         /// <param name="args">The args.</param>
         public void SayHtml(Room room, string message, params object[] args)
         {
-            Say(room, string.Format(message, args), true);
+            //Say(room, string.Format(message, args), true);
+
+            var credentials = CredentialService.GetCredentials();
+
+            var url = "https://api.hipchat.com/v1/rooms/message?format=xml&auth_token=" + credentials.ApiToken;
+            var body = new Dictionary<string, string>();
+            body.Add("room_id", room.Id.ToString());
+            body.Add("from", current.Name);
+            body.Add("message", string.Format(message, args));
+
+            var client = new HttpClient();
+            var postTask = client.PostAsync(url, new FormUrlEncodedContent(body));
+
+            postTask.ContinueWith(x=>
+            {
+                if (x.Result.IsSuccessStatusCode)
+                {
+                    Out.WriteLine("Html Message Sent");
+                }
+                else
+                {
+                    Out.WriteLine("Html Message Failed");
+                }
+            });
         }
 
         private void Say(Room room, string message, bool html)
@@ -271,6 +316,8 @@ namespace HipBot.Services
                 msg.Html.Body = new Body();
                 msg.Html.Body.Value = message;
             }
+            
+            Out.WriteLine(msg.ToString());
 
             connection.Send(msg);
         }

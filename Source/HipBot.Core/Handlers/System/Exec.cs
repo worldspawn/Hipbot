@@ -70,6 +70,9 @@ namespace HipBot.Handlers.System
         /// <param name="options">The options.</param>
         public override void Receive(Message message, Room room, Options options)
         {
+            HipChatService.Say(room, "Exec is disabled... you chatters can't be trusted!");
+            return;
+
             if (executing)
             {
                 HipChatService.Say(room, "Can't you see, I'm busy!");

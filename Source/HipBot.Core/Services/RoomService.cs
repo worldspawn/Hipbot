@@ -85,6 +85,7 @@ namespace HipBot.Services
                 }
             }
 
+            _roomCache = rooms;
             return rooms;
         }
 
@@ -125,6 +126,20 @@ namespace HipBot.Services
             }
 
             return joined;
+        }
+
+        private List<Room> _roomCache = new List<Room>();
+
+        public Room GetRoomByJabberId(string jabberId)
+        {
+            var room = _roomCache.FirstOrDefault(x => x.JabberId == jabberId);
+            if (room == null)
+            {
+                List();
+                room = _roomCache.FirstOrDefault(x => x.JabberId == jabberId);
+            }
+
+            return room;
         }
 
         /// <summary>

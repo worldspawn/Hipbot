@@ -5,11 +5,11 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{9488FC79-AFDE-4A1B-83CB-A9304993EDC5}</ProjectGuid>
+    <ProjectGuid>{1CF81D5A-8C9D-4CB0-B7C4-AA1BB249B7CC}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>HipBot</RootNamespace>
-    <AssemblyName>HipBot.Interfaces</AssemblyName>
+    <RootNamespace>HipBot.Plugins</RootNamespace>
+    <AssemblyName>HipBot.Plugins</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Microsoft.TeamFoundation.WorkItemTracking.Client, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="Sugar">
       <HintPath>..\..\References\Sugar\Sugar.dll</HintPath>
     </Reference>
@@ -44,29 +43,25 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\Credentials.cs" />
-    <Compile Include="Domain\Message.cs" />
-    <Compile Include="Domain\Room.cs" />
-    <Compile Include="Domain\Status.cs" />
-    <Compile Include="Domain\User.cs" />
-    <Compile Include="Events\LoginEventArgs.cs" />
-    <Compile Include="Events\MessageEventArgs.cs" />
-    <Compile Include="Handlers\Handler.cs" />
-    <Compile Include="Handlers\IHandler.cs" />
+    <Compile Include="Intranet\Afk.cs" />
+    <Compile Include="Intranet\NotAfk.cs" />
+    <Compile Include="Intranet\RegisterIntranetId.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IAliasService.cs" />
-    <Compile Include="Services\IConfigService.cs" />
-    <Compile Include="Services\ICredentialService.cs" />
-    <Compile Include="Services\IHandlerService.cs" />
-    <Compile Include="Services\IHipChatService.cs" />
-    <Compile Include="Services\IIntranetService.cs" />
-    <Compile Include="Services\INicknameService.cs" />
-    <Compile Include="Services\IRoomService.cs" />
-    <Compile Include="Services\ITfsService.cs" />
-    <Compile Include="Services\IUpdateService.cs" />
-    <Compile Include="Services\IUserService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\HipBot.Core\HipBot.Core.csproj">
+      <Project>{3E2D69A3-6E8F-4B6F-8489-9CA052D6E009}</Project>
+      <Name>HipBot.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\HipBot.Interfaces\HipBot.Interfaces.csproj">
+      <Project>{9488FC79-AFDE-4A1B-83CB-A9304993EDC5}</Project>
+      <Name>HipBot.Interfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)$(TargetFileName) $(SolutionDir)HipBot\$(OutDir)Plugins</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

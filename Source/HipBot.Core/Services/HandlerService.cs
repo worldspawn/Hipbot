@@ -108,7 +108,7 @@ namespace HipBot.Services
         /// </returns>
         private bool CanHandle(Message message, Room room)
         {
-            var canHandle = true;
+            var canHandle = message.Body != null;
 
             // Check message is not one-on-one message
             if (!room.IsChat)
@@ -120,6 +120,9 @@ namespace HipBot.Services
                 }
 
                 // Strip Bot name from message
+                if (message.Body == null)
+                    return false;
+
                 var index = message.Body.IndexOf(" ");
                 message.Body = message.Body.Substring(index + 1);
             }
